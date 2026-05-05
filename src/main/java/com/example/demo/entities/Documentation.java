@@ -63,6 +63,6 @@ public class Documentation {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "application_id", nullable = false)
+    @JoinColumn(name = "application_id")
     private Application application;
 }
