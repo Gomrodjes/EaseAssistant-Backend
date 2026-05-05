@@ -43,9 +43,6 @@ public class Address {
     @Column(nullable = false)
     private String zipCode;
 
-    private double latitude;
-    private double longitude;
-
     @Size(max = 500)
     private String description;
 
