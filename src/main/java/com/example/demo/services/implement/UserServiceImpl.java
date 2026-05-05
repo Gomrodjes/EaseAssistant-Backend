@@ -65,11 +65,10 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public int deleteUser(Long id) {
+    public void deleteUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("The user not exist to delete"));
 
         userRepository.delete(user);
-        return 1;
     }
 }
