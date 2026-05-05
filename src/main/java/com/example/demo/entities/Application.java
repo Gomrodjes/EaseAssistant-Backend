@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.example.demo.enums.StateApplication;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -43,6 +44,6 @@ public class Application {
     @JoinColumn(name = "user_id", unique = true)
     private User user;
 
-    @OneToMany(mappedBy = "application")
+    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Documentation> documentations = new ArrayList<>();
 }

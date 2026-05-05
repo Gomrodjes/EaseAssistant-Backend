@@ -7,6 +7,7 @@ import java.util.List;
 import com.example.demo.enums.Gender;
 import com.example.demo.enums.UserRole;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -78,10 +79,10 @@ public class User {
     @Column(nullable = false)
     private boolean documentationVerified = false;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Application application;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Address> addresses = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
