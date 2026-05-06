@@ -87,4 +87,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Documentation> documentations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserServiceAssignment> userServiceAssignments = new ArrayList<>();
 }
