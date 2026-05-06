@@ -52,6 +52,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     @Override
     public CategoryResponseDTO createCategory(CategorySaveDTO categorySaveDTO) {
+        if (categoryRepository.existsByName(categorySaveDTO.getName())) {
+            throw new IllegalArgumentException("Category already exists with name: " + categorySaveDTO.getName());
+        }
+
         Category category = modelMapper.map(categorySaveDTO, Category.class);
         category.setServices(new ArrayList<>());
 
@@ -80,6 +84,11 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryResponseDTO updateCategory(Long id, CategoryUpdateDTO categoryUpdateDTO) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Category does not exist to update"));
+
+        if (categoryRepository.existsByNameAndIdNot(categoryUpdateDTO.getName(), id)) {
+            throw new IllegalArgumentException(
+                    "Another category already exists with name: " + categoryUpdateDTO.getName());
+        }
 
         category.setName(categoryUpdateDTO.getName());
         category.setDescription(categoryUpdateDTO.getDescription());

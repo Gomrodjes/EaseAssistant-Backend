@@ -12,4 +12,7 @@ import com.example.demo.entities.Category;
 public interface CategoryRepository extends JpaRepository<Category, Serializable> {
     Optional<Category> findByName(String name);
 
+    boolean existsByName(String name);
+
+    boolean existsByNameAndIdNot(String name, Long id);
 }

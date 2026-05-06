@@ -45,7 +45,7 @@ public class AddressServiceImpl implements AddressService {
 
         Address address = modelMapper.map(addressSaveDTO, Address.class);
         address.setUser(user);
-        address.setPrimary(false);
+        address.setPrimary(addressSaveDTO.isPrimary());
         addressRepository.save(address);
 
         return toResponseDTO(address);
