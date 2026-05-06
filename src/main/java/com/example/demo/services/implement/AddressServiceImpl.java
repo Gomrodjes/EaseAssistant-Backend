@@ -33,9 +33,7 @@ public class AddressServiceImpl implements AddressService {
     public List<AddressResponseDTO> getAllAddressesByUser(Long userId) {
         List<AddressResponseDTO> addresses = new ArrayList<>();
         for (Address address : addressRepository.findByUserId(userId)) {
-            AddressResponseDTO response = modelMapper.map(address, AddressResponseDTO.class);
-            response.setUserId(address.getUser().getId());
-            addresses.add(response);
+            addresses.add(toResponseDTO(address));
         }
         return addresses;
     }
@@ -47,13 +45,10 @@ public class AddressServiceImpl implements AddressService {
 
         Address address = modelMapper.map(addressSaveDTO, Address.class);
         address.setUser(user);
-        address.setPrimary(false);
+        address.setPrimary(addressSaveDTO.isPrimary());
         addressRepository.save(address);
 
-        AddressResponseDTO response = modelMapper.map(address, AddressResponseDTO.class);
-        response.setUserId(user.getId());
-
-        return response;
+        return toResponseDTO(address);
     }
 
     @Override
@@ -74,10 +69,7 @@ public class AddressServiceImpl implements AddressService {
 
         addressRepository.save(address);
 
-        AddressResponseDTO response = modelMapper.map(address, AddressResponseDTO.class);
-        response.setUserId(user.getId());
-
-        return response;
+        return toResponseDTO(address);
     }
 
     @Override
@@ -86,5 +78,11 @@ public class AddressServiceImpl implements AddressService {
                 .orElseThrow(() -> new IllegalArgumentException("Address does not exist to delete"));
 
         addressRepository.delete(address);
+    }
+
+    private AddressResponseDTO toResponseDTO(Address address) {
+        AddressResponseDTO response = modelMapper.map(address, AddressResponseDTO.class);
+        response.setUserId(address.getUser().getId());
+        return response;
     }
 }

@@ -12,6 +12,7 @@ import com.example.demo.models.application.ApplicationSaveDTO;
 import com.example.demo.models.response.ResponseApi;
 import com.example.demo.services.ApplicationService;
 
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +34,7 @@ public class ApplicationController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createApplication(@RequestBody ApplicationSaveDTO applicationSaveDTO) {
+    public ResponseEntity<?> createApplication(@RequestBody @Valid ApplicationSaveDTO applicationSaveDTO) {
         try {
             ApplicationResponseDTO createdApplication = applicationService.createApplication(applicationSaveDTO);
             return ResponseEntity.ok(new ResponseApi<>(true, createdApplication, "Application created successfully"));

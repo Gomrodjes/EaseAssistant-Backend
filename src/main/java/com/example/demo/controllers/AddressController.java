@@ -12,6 +12,7 @@ import com.example.demo.models.address.AddressSaveDTO;
 import com.example.demo.models.response.ResponseApi;
 import com.example.demo.services.AddressService;
 
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +36,7 @@ public class AddressController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createAddress(@RequestBody AddressSaveDTO addressSaveDTO) {
+    public ResponseEntity<?> createAddress(@RequestBody @Valid AddressSaveDTO addressSaveDTO) {
         try {
             AddressResponseDTO createdAddress = addressService.createAddress(addressSaveDTO);
             return ResponseEntity.ok(new ResponseApi<>(true, createdAddress, "Address created successfully"));
@@ -45,7 +46,7 @@ public class AddressController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateAddress(@PathVariable Long id, @RequestBody AddressSaveDTO addressSaveDTO) {
+    public ResponseEntity<?> updateAddress(@PathVariable Long id, @RequestBody @Valid AddressSaveDTO addressSaveDTO) {
         try {
             AddressResponseDTO updatedAddress = addressService.updateAddress(id, addressSaveDTO);
             return ResponseEntity.ok(new ResponseApi<>(true, updatedAddress, "Address updated successfully"));

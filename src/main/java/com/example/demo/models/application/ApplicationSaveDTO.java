@@ -2,6 +2,7 @@ package com.example.demo.models.application;
 
 import java.util.List;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ApplicationSaveDTO {
+    @NotNull
     private Long userId;
+
     private List<Long> documentationsIDs;
 }
