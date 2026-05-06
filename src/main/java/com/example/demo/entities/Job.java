@@ -32,7 +32,7 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Size(max = 500)
@@ -44,9 +44,6 @@ public class Job {
 
     @Column(nullable = false, name = "duration_minutes")
     private int durationMinutes;
-
-    @Column(nullable = false)
-    private boolean active;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)

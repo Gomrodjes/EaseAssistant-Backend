@@ -2,6 +2,8 @@ package com.example.demo.models.category;
 
 import java.util.List;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +14,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategorySaveDTO {
+    @NotBlank
     private String name;
+
+    @Size(max = 500)
     private String description;
+
     private boolean active;
     private List<Long> serviceIds;
 }

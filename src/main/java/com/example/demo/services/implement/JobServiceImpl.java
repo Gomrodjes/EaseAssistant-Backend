@@ -7,11 +7,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 
+import com.example.demo.entities.Category;
 import com.example.demo.entities.Job;
 import com.example.demo.models.job.JobResponseDTO;
 import com.example.demo.models.job.JobSaveDTO;
+import com.example.demo.repositories.CategoryRepository;
 import com.example.demo.repositories.JobRepository;
 import com.example.demo.services.JobService;
 
@@ -23,6 +24,10 @@ public class JobServiceImpl implements JobService {
     @Autowired
     @Qualifier("jobRepository")
     private JobRepository jobRepository;
+
+    @Autowired
+    @Qualifier("categoryRepository")
+    private CategoryRepository categoryRepository;
 
     @Override
     public List<JobResponseDTO> getAllJobs() {
@@ -44,14 +49,42 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public JobResponseDTO createJob(JobSaveDTO jobSaveDTO) {
-        // TODO Auto-generated method stub
-        return null;
+        if (jobRepository.existsByName(jobSaveDTO.getName())) {
+            throw new IllegalArgumentException("Service already exists with name: " + jobSaveDTO.getName());
+        }
+
+        Category category = categoryRepository.findByName(jobSaveDTO.getCategoryName())
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Category does not exist with name: " + jobSaveDTO.getCategoryName()));
+
+        Job job = modelMapper.map(jobSaveDTO, Job.class);
+        job.setCategory(category);
+
+        Job savedJob = jobRepository.save(job);
+        return toResponseDTO(savedJob);
     }
 
     @Override
     public JobResponseDTO updateJob(Long id, JobSaveDTO jobSaveDTO) {
-        // TODO Auto-generated method stub
-        return null;
+        Job job = jobRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Service does not exist to update"));
+
+        if (jobRepository.existsByNameAndIdNot(jobSaveDTO.getName(), id)) {
+            throw new IllegalArgumentException("Another service already exists with name: " + jobSaveDTO.getName());
+        }
+
+        Category category = categoryRepository.findByName(jobSaveDTO.getCategoryName())
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Category does not exist with name: " + jobSaveDTO.getCategoryName()));
+
+        job.setName(jobSaveDTO.getName());
+        job.setDescription(jobSaveDTO.getDescription());
+        job.setPrice(jobSaveDTO.getPrice());
+        job.setDurationMinutes(jobSaveDTO.getDurationMinutes());
+        job.setCategory(category);
+
+        Job updatedJob = jobRepository.save(job);
+        return toResponseDTO(updatedJob);
     }
 
     @Override

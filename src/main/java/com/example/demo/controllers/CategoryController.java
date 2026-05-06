@@ -13,6 +13,7 @@ import com.example.demo.models.category.CategoryUpdateDTO;
 import com.example.demo.models.response.ResponseApi;
 import com.example.demo.services.CategoryService;
 
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,7 +47,7 @@ public class CategoryController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> postMethodName(@RequestBody CategorySaveDTO categorySaveDTO) {
+    public ResponseEntity<?> createCategory(@RequestBody @Valid CategorySaveDTO categorySaveDTO) {
         try {
             CategoryResponseDTO createdCategory = categoryService.createCategory(categorySaveDTO);
             return ResponseEntity.ok(new ResponseApi<>(true, createdCategory, "Category created successfully"));
@@ -56,7 +57,7 @@ public class CategoryController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> putMethodName(@PathVariable Long id, @RequestBody CategoryUpdateDTO categoryUpdateDTO) {
+    public ResponseEntity<?> updateCategory(@PathVariable Long id, @RequestBody @Valid CategoryUpdateDTO categoryUpdateDTO) {
         try {
             CategoryResponseDTO updatedCategory = categoryService.updateCategory(id, categoryUpdateDTO);
             return ResponseEntity.ok(new ResponseApi<>(true, updatedCategory, "Category updated successfully"));
@@ -66,7 +67,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteMethodName(@PathVariable Long id) {
+    public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
         try {
             categoryService.deleteCategory(id);
             return ResponseEntity.ok(new ResponseApi<>(true, null, "Category deleted successfully"));
