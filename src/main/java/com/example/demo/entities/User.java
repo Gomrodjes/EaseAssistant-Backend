@@ -90,4 +90,16 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserServiceAssignment> userServiceAssignments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "customer")
+    private List<Booking> customerBookings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "worker")
+    private List<Booking> workerBookings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "appraiser")
+    private List<Rating> appraiserRatings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "valued")
+    private List<Rating> valuedRatings = new ArrayList<>();
 }

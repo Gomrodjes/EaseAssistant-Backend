@@ -49,6 +49,9 @@ public class Job {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserServiceAssignment> userServiceAssignments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "job")
+    private List<Booking> bookings = new ArrayList<>();
 }
