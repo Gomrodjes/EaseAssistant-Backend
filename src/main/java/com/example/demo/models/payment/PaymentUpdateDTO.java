@@ -15,10 +15,8 @@ import lombok.Setter;
 public class PaymentUpdateDTO {
 
     @NotNull
-    private Long id;
-
-    @NotNull
     private StatePayment state;
 
     private String stripePaymentId;
+
 }

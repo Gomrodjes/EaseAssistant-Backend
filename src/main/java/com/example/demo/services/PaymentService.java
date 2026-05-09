@@ -7,7 +7,7 @@ import com.example.demo.models.payment.PaymentUpdateDTO;
 public interface PaymentService {
     PaymentResponseDTO savePayment(PaymentSaveDTO paymentSaveDTO);
 
-    PaymentResponseDTO updateState(PaymentUpdateDTO paymentUpdateDTO);
+    PaymentResponseDTO updateState(Long id, PaymentUpdateDTO paymentUpdateDTO);
 
     PaymentResponseDTO getPaymentByBookingId(Long bookingId);
 }
