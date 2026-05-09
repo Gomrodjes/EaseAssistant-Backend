@@ -20,6 +20,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -58,9 +59,11 @@ public class Booking {
     @Enumerated(EnumType.STRING)
     private StateBooking state;
 
+    @Size(max = 500)
     @Column(name = "client_note")
     private String clientNote;
 
+    @Size(max = 500)
     @Column(name = "cancellation_reason")
     private String cancellationReason;
 
