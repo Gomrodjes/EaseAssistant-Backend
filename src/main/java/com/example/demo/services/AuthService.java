@@ -66,6 +66,8 @@ public class AuthService {
         user.setActive(false);
         user.setVerified(false);
         user.setDocumentationVerified(false);
+        user.setAverageRating(0);
+        user.setNumberOfReviews(0);
 
         User savedUser = userRepository.save(user);
 
