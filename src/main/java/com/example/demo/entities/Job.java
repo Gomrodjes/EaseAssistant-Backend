@@ -25,7 +25,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "services")
+@Table(name = "jobs")
 public class Job {
 
     @Id

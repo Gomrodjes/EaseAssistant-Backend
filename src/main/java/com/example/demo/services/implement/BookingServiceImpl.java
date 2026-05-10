@@ -84,7 +84,7 @@ public class BookingServiceImpl implements BookingService {
         }
 
         UserServiceAssignment assignment = userServiceAssignmentRepository
-                .findByUserIdAndServiceId(worker.getId(), job.getId())
+                .findByUserIdAndJobId(worker.getId(), job.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Worker is not assigned to this service"));
 
         if (!assignment.isActive()) {
