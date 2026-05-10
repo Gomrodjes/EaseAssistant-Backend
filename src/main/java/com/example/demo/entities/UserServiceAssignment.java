@@ -35,6 +35,6 @@ public class UserServiceAssignment {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "service_id", nullable = false)
-    private Job service;
+    @JoinColumn(name = "job_id", nullable = false)
+    private Job job;
 }

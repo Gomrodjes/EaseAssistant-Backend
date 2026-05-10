@@ -35,18 +35,18 @@ public class UserServiceAssignmentServiceImpl implements UserServiceAssignmentSe
 
     @Transactional
     @Override
-    public UserServiceAssignmentResponseDTO assignServiceToUser(Long userId, Long serviceId) {
+    public UserServiceAssignmentResponseDTO assignServiceToUser(Long userId, Long jobId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User does not exist with id: " + userId));
 
-        Job service = jobRepository.findById(serviceId)
-                .orElseThrow(() -> new IllegalArgumentException("Service does not exist with id: " + serviceId));
+        Job job = jobRepository.findById(jobId)
+                .orElseThrow(() -> new IllegalArgumentException("Service does not exist with id: " + jobId));
 
-        UserServiceAssignment assignment = userServiceAssignmentRepository.findByUserIdAndServiceId(userId, serviceId)
+        UserServiceAssignment assignment = userServiceAssignmentRepository.findByUserIdAndJobId(userId, jobId)
                 .orElseGet(UserServiceAssignment::new);
 
         assignment.setUser(user);
-        assignment.setService(service);
+        assignment.setJob(job);
         assignment.setActive(true);
 
         UserServiceAssignment savedAssignment = userServiceAssignmentRepository.save(assignment);
@@ -56,7 +56,7 @@ public class UserServiceAssignmentServiceImpl implements UserServiceAssignmentSe
     @Transactional
     @Override
     public void unassignServiceFromUser(Long userId, Long serviceId) {
-        UserServiceAssignment assignment = userServiceAssignmentRepository.findByUserIdAndServiceId(userId, serviceId)
+        UserServiceAssignment assignment = userServiceAssignmentRepository.findByUserIdAndJobId(userId, serviceId)
                 .orElseThrow(() -> new IllegalArgumentException("Assignment does not exist"));
 
         if (!assignment.isActive()) {
@@ -81,13 +81,14 @@ public class UserServiceAssignmentServiceImpl implements UserServiceAssignmentSe
     }
 
     @Override
-    public List<UserServiceAssignmentResponseDTO> getActiveAssignmentsByService(Long serviceId) {
-        if (!jobRepository.findById(serviceId).isPresent()) {
-            throw new IllegalArgumentException("Service does not exist with id: " + serviceId);
+    public List<UserServiceAssignmentResponseDTO> getActiveAssignmentsByService(Long jobId) {
+        if (!jobRepository.findById(jobId).isPresent()) {
+            throw new IllegalArgumentException("Service does not exist with id: " + jobId);
         }
 
         List<UserServiceAssignmentResponseDTO> assignments = new ArrayList<>();
-        for (UserServiceAssignment assignment : userServiceAssignmentRepository.findByServiceIdAndActiveTrue(serviceId)) {
+        for (UserServiceAssignment assignment : userServiceAssignmentRepository
+                .findByJobIdAndActiveTrue(jobId)) {
             assignments.add(toResponseDTO(assignment));
         }
         return assignments;
@@ -98,8 +99,8 @@ public class UserServiceAssignmentServiceImpl implements UserServiceAssignmentSe
                 assignment.getId(),
                 assignment.getUser().getId(),
                 assignment.getUser().getFullName(),
-                assignment.getService().getId(),
-                assignment.getService().getName(),
+                assignment.getJob().getId(),
+                assignment.getJob().getName(),
                 assignment.isActive());
     }
 }

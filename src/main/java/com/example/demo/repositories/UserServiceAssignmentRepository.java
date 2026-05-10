@@ -10,9 +10,9 @@ import com.example.demo.entities.UserServiceAssignment;
 
 @Repository("userServiceAssignmentRepository")
 public interface UserServiceAssignmentRepository extends JpaRepository<UserServiceAssignment, Long> {
-    Optional<UserServiceAssignment> findByUserIdAndServiceId(Long userId, Long serviceId);
+    Optional<UserServiceAssignment> findByUserIdAndJobId(Long userId, Long jobId);
 
     List<UserServiceAssignment> findByUserIdAndActiveTrue(Long userId);
 
-    List<UserServiceAssignment> findByServiceIdAndActiveTrue(Long serviceId);
+    List<UserServiceAssignment> findByJobIdAndActiveTrue(Long serviceId);
 }
