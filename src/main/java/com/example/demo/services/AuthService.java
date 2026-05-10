@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entities.User;
 import com.example.demo.enums.UserRole;
 import com.example.demo.models.users.UserResponseDTO;
+import com.example.demo.models.users.UserRoleUpdateDTO;
 import com.example.demo.models.users.UserSaveDTO;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.security.JwtTokenProvider;
@@ -68,6 +69,30 @@ public class AuthService {
         user.setDocumentationVerified(false);
         user.setAverageRating(0);
         user.setNumberOfReviews(0);
+
+        User savedUser = userRepository.save(user);
+
+        return new UserResponseDTO(
+                savedUser.getId(),
+                savedUser.getEmail(),
+                savedUser.getFullName(),
+                savedUser.getDateOfBirth(),
+                savedUser.getGender(),
+                savedUser.getNationality(),
+                savedUser.getBiography(),
+                savedUser.getPhoneNumber(),
+                savedUser.getRole(),
+                savedUser.isActive(),
+                savedUser.isVerified(),
+                savedUser.isDocumentationVerified());
+    }
+
+    @Transactional
+    public UserResponseDTO updateRoleAfterRegister(Long id, UserRoleUpdateDTO userRoleUpdateDTO) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("The user not exist to update role"));
+
+        user.setRole(userRoleUpdateDTO.getRole());
 
         User savedUser = userRepository.save(user);
 
