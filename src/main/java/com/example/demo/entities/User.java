@@ -54,7 +54,6 @@ public class User {
 
     private String nationality;
 
-    @Lob
     private String biography;
 
     @Column(unique = true, nullable = false)
