@@ -8,12 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.example.demo.entities.Category;
-import com.example.demo.entities.Job;
 import com.example.demo.models.category.CategoryResponseDTO;
 import com.example.demo.models.category.CategorySaveDTO;
 import com.example.demo.models.category.CategoryUpdateDTO;
 import com.example.demo.repositories.CategoryRepository;
-import com.example.demo.repositories.JobRepository;
 import com.example.demo.services.CategoryService;
 
 import jakarta.transaction.Transactional;
@@ -26,10 +24,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     @Qualifier("categoryRepository")
     private CategoryRepository categoryRepository;
-
-    @Autowired
-    @Qualifier("jobRepository")
-    private JobRepository jobRepository;
 
     @Override
     public List<CategoryResponseDTO> getAllCategories() {
@@ -60,21 +54,6 @@ public class CategoryServiceImpl implements CategoryService {
         category.setServices(new ArrayList<>());
 
         Category savedCategory = categoryRepository.save(category);
-
-        if (categorySaveDTO.getServiceIds() != null && !categorySaveDTO.getServiceIds().isEmpty()) {
-            List<Job> services = jobRepository.findAllById(categorySaveDTO.getServiceIds());
-
-            if (services.size() != categorySaveDTO.getServiceIds().size()) {
-                throw new IllegalArgumentException("One or more services do not exist");
-            }
-
-            for (Job service : services) {
-                service.setCategory(savedCategory);
-            }
-
-            jobRepository.saveAll(services);
-            savedCategory.setServices(services);
-        }
 
         return toResponseDTO(savedCategory);
     }
