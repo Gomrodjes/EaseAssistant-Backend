@@ -14,6 +14,7 @@ import com.example.demo.entities.Documentation;
 import com.example.demo.entities.User;
 import com.example.demo.enums.StateApplication;
 import com.example.demo.models.application.ApplicationResponseDTO;
+import com.example.demo.models.application.ApplicationReviewDTO;
 import com.example.demo.models.application.ApplicationSaveDTO;
 import com.example.demo.repositories.ApplicationRepository;
 import com.example.demo.repositories.DocumentationRepository;
@@ -90,11 +91,12 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Transactional
     @Override
-    public ApplicationResponseDTO applicationAccepted(Long id) {
+    public ApplicationResponseDTO applicationAccepted(Long id, ApplicationReviewDTO applicationReviewDTO) {
         Application application = applicationRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("The application not exist to accept"));
 
         application.setState(StateApplication.APPROVED);
+        application.setReviewMessage(applicationReviewDTO != null ? applicationReviewDTO.getReviewMessage() : null);
         application.getUser().setDocumentationVerified(true);
         applicationRepository.save(application);
         return toResponseDTO(application);
@@ -102,11 +104,12 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Transactional
     @Override
-    public ApplicationResponseDTO applicationDenied(Long id) {
+    public ApplicationResponseDTO applicationDenied(Long id, ApplicationReviewDTO applicationReviewDTO) {
         Application application = applicationRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("The application not exist to deny"));
 
         application.setState(StateApplication.DENIED);
+        application.setReviewMessage(applicationReviewDTO != null ? applicationReviewDTO.getReviewMessage() : null);
         application.getUser().setDocumentationVerified(false);
         applicationRepository.save(application);
         return toResponseDTO(application);
@@ -116,6 +119,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         return new ApplicationResponseDTO(
                 application.getId(),
                 application.getState().name(),
+                application.getReviewMessage(),
                 application.getUser() != null ? application.getUser().getId() : null,
                 application.getDocumentations().stream()
                         .map(Documentation::getOriginalFileName)

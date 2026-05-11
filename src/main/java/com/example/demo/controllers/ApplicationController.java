@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.models.application.ApplicationResponseDTO;
+import com.example.demo.models.application.ApplicationReviewDTO;
 import com.example.demo.models.application.ApplicationSaveDTO;
 import com.example.demo.models.response.ResponseApi;
 import com.example.demo.services.ApplicationService;
@@ -44,9 +45,11 @@ public class ApplicationController {
     }
 
     @PutMapping("/approved/{id}")
-    public ResponseEntity<?> getApprovedApplication(@PathVariable Long id) {
+    public ResponseEntity<?> getApprovedApplication(
+            @PathVariable Long id,
+            @RequestBody @Valid ApplicationReviewDTO applicationReviewDTO) {
         try {
-            ApplicationResponseDTO approvedApplication = applicationService.applicationAccepted(id);
+            ApplicationResponseDTO approvedApplication = applicationService.applicationAccepted(id, applicationReviewDTO);
             return ResponseEntity
                     .ok(new ResponseApi<>(true, approvedApplication, "Application retrieved successfully"));
         } catch (Exception e) {
@@ -55,9 +58,11 @@ public class ApplicationController {
     }
 
     @PutMapping("/denied/{id}")
-    public ResponseEntity<?> getDeniedApplication(@PathVariable Long id) {
+    public ResponseEntity<?> getDeniedApplication(
+            @PathVariable Long id,
+            @RequestBody @Valid ApplicationReviewDTO applicationReviewDTO) {
         try {
-            ApplicationResponseDTO deniedApplication = applicationService.applicationDenied(id);
+            ApplicationResponseDTO deniedApplication = applicationService.applicationDenied(id, applicationReviewDTO);
             return ResponseEntity
                     .ok(new ResponseApi<>(true, deniedApplication, "Application retrieved successfully"));
         } catch (Exception e) {
