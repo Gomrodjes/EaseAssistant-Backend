@@ -64,7 +64,7 @@ public class AuthService {
         user.setBiography(userSaveDTO.getBiography());
         user.setPhoneNumber(phoneNumber);
         user.setRole(UserRole.CLIENT);
-        user.setActive(false);
+        user.setActive(true);
         user.setVerified(false);
         user.setDocumentationVerified(false);
         user.setAverageRating(0);

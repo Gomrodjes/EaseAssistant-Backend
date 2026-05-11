@@ -63,6 +63,17 @@ public class UserServiceImpl implements UserService {
         return modelMapper.map(user, UserResponseDTO.class);
     }
 
+    @Override
+    public UserResponseDTO updateUserActiveStatus(Long id, boolean isActive) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("The user not exist to update"));
+
+        user.setActive(isActive);
+        userRepository.save(user);
+
+        return modelMapper.map(user, UserResponseDTO.class);
+    }
+
     @Transactional
     @Override
     public void deleteUser(Long id) {

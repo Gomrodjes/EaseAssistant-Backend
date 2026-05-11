@@ -10,5 +10,7 @@ public interface UserService {
 
     UserResponseDTO updateUser(Long id, UserUpdateDTO userUpdateDTO);
 
+    UserResponseDTO updateUserActiveStatus(Long id, boolean isActive);
+
     void deleteUser(Long id);
 }
