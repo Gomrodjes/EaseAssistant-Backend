@@ -1,9 +1,14 @@
 package com.example.demo.enums;
 
 public enum TypeDocument {
-    DNI,
+    DNI_FRONT,
+    DNI_BACK,
+    SELFIE,
     PASSPORT,
+    BACKGROUND_CHECK_CERTIFICATE,
     BACKGOUND_CHECK_CERTIFICATE,
+    SOCIAL_SECURITY_DOCUMENT,
+    TRAINING_CERTIFICATE,
     RETA,
     OTHER
 }
