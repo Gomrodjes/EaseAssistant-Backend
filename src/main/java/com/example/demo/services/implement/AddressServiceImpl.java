@@ -43,7 +43,12 @@ public class AddressServiceImpl implements AddressService {
         User user = userRepository.findById(addressSaveDTO.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User does not exist to create address"));
 
-        Address address = modelMapper.map(addressSaveDTO, Address.class);
+        Address address = new Address();
+        address.setStreet(addressSaveDTO.getStreet());
+        address.setCity(addressSaveDTO.getCity());
+        address.setCountry(addressSaveDTO.getCountry());
+        address.setZipCode(addressSaveDTO.getZipCode());
+        address.setDescription(addressSaveDTO.getDescription());
         address.setUser(user);
         address.setPrimary(addressSaveDTO.isPrimary());
         addressRepository.save(address);
@@ -64,7 +69,7 @@ public class AddressServiceImpl implements AddressService {
         address.setCountry(addressSaveDTO.getCountry());
         address.setZipCode(addressSaveDTO.getZipCode());
         address.setDescription(addressSaveDTO.getDescription());
-        address.setPrimary(address.isPrimary());
+        address.setPrimary(addressSaveDTO.isPrimary());
         address.setUser(user);
 
         addressRepository.save(address);

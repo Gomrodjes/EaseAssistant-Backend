@@ -17,5 +17,6 @@ public class AddressResponseDTO {
     private String zipCode;
     private String description;
     private boolean isPrimary;
+
     private Long userId;
 }
