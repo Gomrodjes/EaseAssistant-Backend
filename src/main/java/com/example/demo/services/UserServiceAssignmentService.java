@@ -5,11 +5,11 @@ import java.util.List;
 import com.example.demo.models.userServiceAssignment.UserServiceAssignmentResponseDTO;
 
 public interface UserServiceAssignmentService {
-    UserServiceAssignmentResponseDTO assignServiceToUser(Long userId, Long serviceId);
+    UserServiceAssignmentResponseDTO assignServiceToUser(Long userId, Long categoryId);
 
-    void unassignServiceFromUser(Long userId, Long serviceId);
+    void unassignServiceFromUser(Long userId, Long categoryId);
 
     List<UserServiceAssignmentResponseDTO> getActiveAssignmentsByUser(Long userId);
 
-    List<UserServiceAssignmentResponseDTO> getActiveAssignmentsByService(Long serviceId);
+    List<UserServiceAssignmentResponseDTO> getActiveAssignmentsByService(Long categoryId);
 }

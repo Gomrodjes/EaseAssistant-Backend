@@ -20,7 +20,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user_service_assignments", uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "user_id", "service_id" }) })
+        @UniqueConstraint(columnNames = { "user_id", "category_id" }) })
 public class UserServiceAssignment {
 
     @Id
@@ -35,6 +35,6 @@ public class UserServiceAssignment {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "job_id", nullable = false)
-    private Job job;
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 }
