@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.core.io.PathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.entities.Documentation;
 import com.example.demo.entities.User;
+import com.example.demo.models.documentation.DocumentationFileDTO;
 import com.example.demo.models.documentation.DocumentationResponseDTO;
 import com.example.demo.models.documentation.DocumentationSaveDTO;
 import com.example.demo.repositories.DocumentationRepository;
@@ -99,6 +102,30 @@ public class DocumentationServiceImpl implements DocumentationService {
             documentations.add(response);
         }
         return documentations;
+    }
+
+    @Override
+    public DocumentationFileDTO getDocumentationFile(Long documentationId) {
+        Documentation documentation = documentationRepository.findById(documentationId)
+                .orElseThrow(() -> new IllegalArgumentException("Documentation does not exist"));
+
+        Path filePath = Paths.get(documentation.getFilePath()).toAbsolutePath().normalize();
+        Resource resource = new PathResource(filePath);
+
+        if (!resource.exists() || !resource.isReadable()) {
+            throw new IllegalArgumentException("Documentation file is not available");
+        }
+
+        try {
+            String contentType = Files.probeContentType(filePath);
+            if (!StringUtils.hasText(contentType)) {
+                contentType = "application/octet-stream";
+            }
+
+            return new DocumentationFileDTO(resource, documentation.getOriginalFileName(), contentType);
+        } catch (IOException e) {
+            throw new RuntimeException("The documentation file could not be read", e);
+        }
     }
 
 }

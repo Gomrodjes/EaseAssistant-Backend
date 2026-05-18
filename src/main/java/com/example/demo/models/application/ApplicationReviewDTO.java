@@ -1,7 +1,6 @@
 package com.example.demo.models.application;
 
-import java.util.List;
-
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApplicationResponseDTO {
-    private Long id;
-    private String state;
+public class ApplicationReviewDTO {
+
+    @Size(max = 2000, message = "The review message must not exceed 2000 characters")
     private String reviewMessage;
-    private Long userId;
-    private List<String> documentationsNames;
 }

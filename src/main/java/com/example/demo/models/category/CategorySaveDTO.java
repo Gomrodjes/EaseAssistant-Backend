@@ -1,7 +1,5 @@
 package com.example.demo.models.category;
 
-import java.util.List;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -21,5 +19,4 @@ public class CategorySaveDTO {
     private String description;
 
     private boolean active;
-    private List<Long> serviceIds;
 }

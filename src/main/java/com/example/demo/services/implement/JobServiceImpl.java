@@ -53,9 +53,9 @@ public class JobServiceImpl implements JobService {
             throw new IllegalArgumentException("Service already exists with name: " + jobSaveDTO.getName());
         }
 
-        Category category = categoryRepository.findByName(jobSaveDTO.getCategoryName())
+        Category category = categoryRepository.findById(jobSaveDTO.getCategoryId())
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "Category does not exist with name: " + jobSaveDTO.getCategoryName()));
+                        "Category does not exist with id: " + jobSaveDTO.getCategoryId()));
 
         Job job = modelMapper.map(jobSaveDTO, Job.class);
         job.setCategory(category);
@@ -73,9 +73,9 @@ public class JobServiceImpl implements JobService {
             throw new IllegalArgumentException("Another service already exists with name: " + jobSaveDTO.getName());
         }
 
-        Category category = categoryRepository.findByName(jobSaveDTO.getCategoryName())
+        Category category = categoryRepository.findById(jobSaveDTO.getCategoryId())
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "Category does not exist with name: " + jobSaveDTO.getCategoryName()));
+                        "Category does not exist with id: " + jobSaveDTO.getCategoryId()));
 
         job.setName(jobSaveDTO.getName());
         job.setDescription(jobSaveDTO.getDescription());

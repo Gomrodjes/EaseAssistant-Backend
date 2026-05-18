@@ -31,6 +31,6 @@ public class JobSaveDTO {
     @Min(1)
     private int durationMinutes;
 
-    @NotBlank
-    private String categoryName;
+    @NotNull
+    private Long categoryId;
 }

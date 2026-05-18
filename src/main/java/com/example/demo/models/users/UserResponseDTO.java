@@ -23,6 +23,8 @@ public class UserResponseDTO {
     private String nationality;
     private String biography;
     private String phoneNumber;
+    private int numberOfReviews;
+    private double averageRating;
     private UserRole role;
     private boolean isActive;
     private boolean isVerified;

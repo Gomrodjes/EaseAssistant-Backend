@@ -40,6 +40,9 @@ public class Application {
     @Column(nullable = false)
     private StateApplication state;
 
+    @Column(columnDefinition = "TEXT")
+    private String reviewMessage;
+
     @OneToOne
     @JoinColumn(name = "user_id", unique = true)
     private User user;

@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,7 +24,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "services")
+@Table(name = "jobs")
 public class Job {
 
     @Id
@@ -48,9 +47,6 @@ public class Job {
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
-
-    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserServiceAssignment> userServiceAssignments = new ArrayList<>();
 
     @OneToMany(mappedBy = "job")
     private List<Booking> bookings = new ArrayList<>();

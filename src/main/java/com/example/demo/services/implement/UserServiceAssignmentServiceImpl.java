@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entities.Job;
+import com.example.demo.entities.Category;
 import com.example.demo.entities.User;
 import com.example.demo.entities.UserServiceAssignment;
 import com.example.demo.models.userServiceAssignment.UserServiceAssignmentResponseDTO;
-import com.example.demo.repositories.JobRepository;
+import com.example.demo.repositories.CategoryRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.repositories.UserServiceAssignmentRepository;
 import com.example.demo.services.UserServiceAssignmentService;
@@ -30,23 +30,23 @@ public class UserServiceAssignmentServiceImpl implements UserServiceAssignmentSe
     private UserRepository userRepository;
 
     @Autowired
-    @Qualifier("jobRepository")
-    private JobRepository jobRepository;
+    @Qualifier("categoryRepository")
+    private CategoryRepository categoryRepository;
 
     @Transactional
     @Override
-    public UserServiceAssignmentResponseDTO assignServiceToUser(Long userId, Long serviceId) {
+    public UserServiceAssignmentResponseDTO assignServiceToUser(Long userId, Long categoryId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User does not exist with id: " + userId));
 
-        Job service = jobRepository.findById(serviceId)
-                .orElseThrow(() -> new IllegalArgumentException("Service does not exist with id: " + serviceId));
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new IllegalArgumentException("Service does not exist with id: " + categoryId));
 
-        UserServiceAssignment assignment = userServiceAssignmentRepository.findByUserIdAndServiceId(userId, serviceId)
+        UserServiceAssignment assignment = userServiceAssignmentRepository.findByUserIdAndCategoryId(userId, categoryId)
                 .orElseGet(UserServiceAssignment::new);
 
         assignment.setUser(user);
-        assignment.setService(service);
+        assignment.setCategory(category);
         assignment.setActive(true);
 
         UserServiceAssignment savedAssignment = userServiceAssignmentRepository.save(assignment);
@@ -56,7 +56,7 @@ public class UserServiceAssignmentServiceImpl implements UserServiceAssignmentSe
     @Transactional
     @Override
     public void unassignServiceFromUser(Long userId, Long serviceId) {
-        UserServiceAssignment assignment = userServiceAssignmentRepository.findByUserIdAndServiceId(userId, serviceId)
+        UserServiceAssignment assignment = userServiceAssignmentRepository.findByUserIdAndCategoryId(userId, serviceId)
                 .orElseThrow(() -> new IllegalArgumentException("Assignment does not exist"));
 
         if (!assignment.isActive()) {
@@ -81,13 +81,14 @@ public class UserServiceAssignmentServiceImpl implements UserServiceAssignmentSe
     }
 
     @Override
-    public List<UserServiceAssignmentResponseDTO> getActiveAssignmentsByService(Long serviceId) {
-        if (!jobRepository.findById(serviceId).isPresent()) {
-            throw new IllegalArgumentException("Service does not exist with id: " + serviceId);
+    public List<UserServiceAssignmentResponseDTO> getActiveAssignmentsByService(Long categoryId) {
+        if (!categoryRepository.findById(categoryId).isPresent()) {
+            throw new IllegalArgumentException("Service does not exist with id: " + categoryId);
         }
 
         List<UserServiceAssignmentResponseDTO> assignments = new ArrayList<>();
-        for (UserServiceAssignment assignment : userServiceAssignmentRepository.findByServiceIdAndActiveTrue(serviceId)) {
+        for (UserServiceAssignment assignment : userServiceAssignmentRepository
+                .findByCategoryIdAndActiveTrue(categoryId)) {
             assignments.add(toResponseDTO(assignment));
         }
         return assignments;
@@ -98,8 +99,8 @@ public class UserServiceAssignmentServiceImpl implements UserServiceAssignmentSe
                 assignment.getId(),
                 assignment.getUser().getId(),
                 assignment.getUser().getFullName(),
-                assignment.getService().getId(),
-                assignment.getService().getName(),
+                assignment.getCategory().getId(),
+                assignment.getCategory().getName(),
                 assignment.isActive());
     }
 }

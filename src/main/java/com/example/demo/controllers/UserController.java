@@ -43,6 +43,16 @@ public class UserController {
         }
     }
 
+    @PutMapping("/{id}/active/{isActive}")
+    public ResponseEntity<?> updateUserActiveStatus(@PathVariable Long id, @PathVariable boolean isActive) {
+        try {
+            UserResponseDTO updatedUser = userService.updateUserActiveStatus(id, isActive);
+            return ResponseEntity.ok(new ResponseApi<>(true, updatedUser, "User status updated successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseApi<>(false, null, e.getMessage()));
+        }
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         try {
